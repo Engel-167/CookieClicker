@@ -1,0 +1,23 @@
+{
+  "Engel": {
+    "password": "$2b$10$3K0PyJR9Y3tDTComZ3kSz..o2nQV6kFdpxDUgoPgpzrNQsYIBiHbW",
+    "createdAt": "2025-10-17T03:18:42.615Z",
+    "gameData": {
+      "cookies": 12.930000000000028,
+      "totalClicks": 44,
+      "allTimeCookies": 44.93000000000005,
+      "cookiesPerSecond": 0.2,
+      "upgrades": {
+        "cursor": 2,
+        "grandma": 0,
+        "farm": 0,
+        "mine": 0,
+        "factory": 0,
+        "bank": 0,
+        "temple": 0,
+        "wizard": 0
+      },
+      "lastSaved": "2025-10-17T03:19:03.661Z"
+    }
+  }
+}

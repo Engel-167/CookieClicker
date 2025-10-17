@@ -185,7 +185,7 @@ class CookieGame {
     }
 
     // Save game
-    saveGame() {
+    async saveGame() {
         const username = authSystem.getCurrentUser();
         if (username) {
             const gameData = {
@@ -195,7 +195,7 @@ class CookieGame {
                 cookiesPerSecond: this.cookiesPerSecond,
                 upgrades: this.upgrades
             };
-            authSystem.saveUserGameData(username, gameData);
+            await authSystem.saveUserGameData(username, gameData);
         }
     }
 

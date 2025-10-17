@@ -34,12 +34,14 @@ class App {
         });
 
         // Login form submission
-        document.getElementById('loginFormElement').addEventListener('submit', (e) => {
+        document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
             
-            const result = authSystem.login(username, password);
+            this.showMessage('loginMessage', 'Logging in...', 'success');
+            
+            const result = await authSystem.login(username, password);
             this.showMessage('loginMessage', result.message, result.success ? 'success' : 'error');
 
             if (result.success) {
@@ -50,7 +52,7 @@ class App {
         });
 
         // Signup form submission
-        document.getElementById('signupFormElement').addEventListener('submit', (e) => {
+        document.getElementById('signupFormElement').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('signupUsername').value.trim();
             const password = document.getElementById('signupPassword').value;
@@ -61,13 +63,15 @@ class App {
                 return;
             }
 
-            const result = authSystem.signup(username, password);
+            this.showMessage('signupMessage', 'Creating account...', 'success');
+
+            const result = await authSystem.signup(username, password);
             this.showMessage('signupMessage', result.message, result.success ? 'success' : 'error');
 
             if (result.success) {
-                setTimeout(() => {
+                setTimeout(async () => {
                     // Auto-login after signup
-                    authSystem.login(username, password);
+                    await authSystem.login(username, password);
                     this.showGame();
                 }, 500);
             }
@@ -98,7 +102,7 @@ class App {
         document.getElementById('gameContainer').classList.add('hidden');
     }
 
-    showGame() {
+    async showGame() {
         document.getElementById('authContainer').classList.add('hidden');
         document.getElementById('gameContainer').classList.remove('hidden');
 
@@ -106,7 +110,7 @@ class App {
         document.getElementById('currentUser').textContent = `Welcome, ${username}!`;
 
         // Load game data
-        const gameData = authSystem.getUserGameData(username);
+        const gameData = await authSystem.getUserGameData(username);
         cookieGame.loadGame(gameData);
         cookieGame.renderUpgrades();
         cookieGame.updateDisplay();

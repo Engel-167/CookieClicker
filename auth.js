@@ -1,92 +1,52 @@
 // Authentication Module
 class AuthSystem {
     constructor() {
-        this.USERS_KEY = 'cookieClicker_users';
         this.CURRENT_USER_KEY = 'cookieClicker_currentUser';
-    }
-
-    // Get all users from localStorage
-    getAllUsers() {
-        const users = localStorage.getItem(this.USERS_KEY);
-        return users ? JSON.parse(users) : {};
-    }
-
-    // Save users to localStorage
-    saveUsers(users) {
-        localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
-    }
-
-    // Hash password (simple hash for demo - in production use proper hashing)
-    hashPassword(password) {
-        let hash = 0;
-        for (let i = 0; i < password.length; i++) {
-            const char = password.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-        return hash.toString(36);
+        this.API_BASE_URL = window.location.origin; // Use same origin as the page
     }
 
     // Sign up a new user
-    signup(username, password) {
-        // Validate input
-        if (!username || !password) {
-            return { success: false, message: 'Username and password are required' };
+    async signup(username, password) {
+        try {
+            const response = await fetch(`${this.API_BASE_URL}/api/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Signup error:', error);
+            return { success: false, message: 'Network error. Please try again.' };
         }
-
-        if (username.length < 3) {
-            return { success: false, message: 'Username must be at least 3 characters' };
-        }
-
-        if (password.length < 6) {
-            return { success: false, message: 'Password must be at least 6 characters' };
-        }
-
-        const users = this.getAllUsers();
-
-        // Check if user already exists
-        if (users[username]) {
-            return { success: false, message: 'Username already exists' };
-        }
-
-        // Create new user
-        users[username] = {
-            password: this.hashPassword(password),
-            createdAt: new Date().toISOString(),
-            gameData: {
-                cookies: 0,
-                totalClicks: 0,
-                allTimeCookies: 0,
-                cookiesPerSecond: 0,
-                upgrades: {},
-                lastSaved: new Date().toISOString()
-            }
-        };
-
-        this.saveUsers(users);
-        return { success: true, message: 'Account created successfully!' };
     }
 
     // Login user
-    login(username, password) {
-        if (!username || !password) {
-            return { success: false, message: 'Username and password are required' };
+    async login(username, password) {
+        try {
+            const response = await fetch(`${this.API_BASE_URL}/api/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                // Set current user in localStorage (for session management)
+                localStorage.setItem(this.CURRENT_USER_KEY, username);
+            }
+            
+            return data;
+        } catch (error) {
+            console.error('Login error:', error);
+            return { success: false, message: 'Network error. Please try again.' };
         }
-
-        const users = this.getAllUsers();
-        const user = users[username];
-
-        if (!user) {
-            return { success: false, message: 'Invalid username or password' };
-        }
-
-        if (user.password !== this.hashPassword(password)) {
-            return { success: false, message: 'Invalid username or password' };
-        }
-
-        // Set current user
-        localStorage.setItem(this.CURRENT_USER_KEY, username);
-        return { success: true, message: 'Login successful!', username };
     }
 
     // Logout user
@@ -105,24 +65,38 @@ class AuthSystem {
     }
 
     // Get user's game data
-    getUserGameData(username) {
-        const users = this.getAllUsers();
-        const user = users[username];
-        return user ? user.gameData : null;
+    async getUserGameData(username) {
+        try {
+            const response = await fetch(`${this.API_BASE_URL}/api/gamedata/${username}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                return data.gameData;
+            }
+            return null;
+        } catch (error) {
+            console.error('Get game data error:', error);
+            return null;
+        }
     }
 
     // Save user's game data
-    saveUserGameData(username, gameData) {
-        const users = this.getAllUsers();
-        if (users[username]) {
-            users[username].gameData = {
-                ...gameData,
-                lastSaved: new Date().toISOString()
-            };
-            this.saveUsers(users);
-            return true;
+    async saveUserGameData(username, gameData) {
+        try {
+            const response = await fetch(`${this.API_BASE_URL}/api/gamedata/${username}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(gameData)
+            });
+
+            const data = await response.json();
+            return data.success;
+        } catch (error) {
+            console.error('Save game data error:', error);
+            return false;
         }
-        return false;
     }
 }
 
