@@ -1,0 +1,8 @@
+# Cookie Clicker
+/node_modules
+/.env
+.DS_Store
+/.vscode
+/dist
+/.idea
+*.log

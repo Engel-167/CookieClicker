@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker - Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-container" id="authContainer">
+            <h1>🍪 Cookie Clicker</h1>
+            
+            <!-- Login Form -->
+            <div class="form-container" id="loginForm">
+                <h2>Login</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <p class="form-switch">Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
+                </form>
+                <div class="message" id="loginMessage"></div>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="form-container hidden" id="signupForm">
+                <h2>Sign Up</h2>
+                <form id="signupFormElement">
+                    <div class="form-group">
+                        <label for="signupUsername">Username</label>
+                        <input type="text" id="signupUsername" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" required autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" required autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <p class="form-switch">Already have an account? <a href="#" id="showLogin">Login</a></p>
+                </form>
+                <div class="message" id="signupMessage"></div>
+            </div>
+        </div>
+
+        <!-- Game Container -->
+        <div class="game-container hidden" id="gameContainer">
+            <div class="game-header">
+                <h1>🍪 Cookie Clicker</h1>
+                <div class="user-info">
+                    <span id="currentUser"></span>
+                    <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="stats-panel">
+                    <h2>Stats</h2>
+                    <div class="stat-item">
+                        <span class="stat-label">Cookies:</span>
+                        <span class="stat-value" id="cookieCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Per Second:</span>
+                        <span class="stat-value" id="cookiesPerSecond">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Clicks:</span>
+                        <span class="stat-value" id="totalClicks">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">All Time:</span>
+                        <span class="stat-value" id="allTimeCookies">0</span>
+                    </div>
+                </div>
+
+                <div class="cookie-panel">
+                    <button class="cookie-button" id="cookieButton">
+                        <span class="cookie-icon">🍪</span>
+                    </button>
+                    <p class="click-instruction">Click the cookie!</p>
+                </div>
+
+                <div class="upgrades-panel">
+                    <h2>Upgrades</h2>
+                    <div class="upgrades-list" id="upgradesList">
+                        <!-- Upgrades will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="game.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
