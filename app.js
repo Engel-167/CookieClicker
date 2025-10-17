@@ -69,11 +69,17 @@ class App {
             this.showMessage('signupMessage', result.message, result.success ? 'success' : 'error');
 
             if (result.success) {
-                setTimeout(async () => {
-                    // Auto-login after signup
-                    await authSystem.login(username, password);
-                    this.showGame();
-                }, 500);
+                // Auto-login after signup
+                const loginResult = await authSystem.login(username, password);
+                if (loginResult.success) {
+                    setTimeout(() => {
+                        this.showGame();
+                    }, 500);
+                } else {
+                    this.showMessage('signupMessage', 'Account created! Please login.', 'success');
+                    document.getElementById('signupForm').classList.add('hidden');
+                    document.getElementById('loginForm').classList.remove('hidden');
+                }
             }
         });
     }
